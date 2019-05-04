@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #map{
+          height:400px;
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+    
+    
+
+    <div id="map"></div>
+        
+        <button class="SearchBtn" type="submit">
+		update
+        </button>
+
+    <table id="table1" border="4" style= "background-color: #0fffff;  margin:13% auto;" >
+
+        <tr>
+            <th>Level</th>
+        </tr>
+        </table>
+        <button class="SearchBtn" type="submit">
+            update
+                </button>
+
+    <script>
+        function initMap() {
+            var options = {
+        zoom:11,
+        center:{lat: 13.0528, lng: 77.5419}
+      }
+
+      var extiv;
+      var extprops;
+
+      var map = new google.maps.Map(document.getElementById('map'), options);
+
+      var markers = [
+        {
+          coords:{lat: 12.9716, lng: 77.5946},
+          dustbinId:'DB01',
+          area:'Bengaluru D Souza Layout, Karnataka, 560051 D Souza Layout, Ashok Nagar Bengaluru India',
+          mprop:{}
+        },
+        {
+          coords:{lat: 13.0528, lng: 77.5419},
+          dustbinId:'DB02',
+          area:'Bengaluru Jalahalli, Karnataka, 560013',
+          mprop:{}
+        },
+        {
+          coords:{lat: 13.0961, lng: 77.8353},
+          dustbinId:'DB03',
+          area:'Old Madras Road, Hosakote Taluka, Karnataka, 562114',
+          mprop:{}
+        },
+        {
+          coords:{lat: 13.0280, lng: 77.5409},
+          dustbinId:'DB04',
+          area:'Tumkur Road, Bengaluru Yeshwanthpur, Karnataka, 560022',
+          mprop:{}
+        },
+        {
+          coords:{lat: 12.9901, lng: 77.5525},
+          dustbinId:'DB05',
+          area:'17th Main Road, Bengaluru Rajaji Nagar, Karnataka, 560010',
+          mprop:{}
+        },
+        {
+          coords:{lat: 12.9767, lng: 77.5713},
+          dustbinId:'DB06',
+          area:'Seshadripuram, Majestic, Kempegowda Bengaluru India 560051',
+          mprop:{}
+        }
+    ];
+
+    function get() {
+    
+    }
+
+    var iconImage='../Desktop/dbmark.png';
+      // Loop through markers
+      for(var i = 0;i < markers.length;i++){
+        // Add marker
+        addMarker(markers[i]);
+      }
+
+      // Add Marker Function
+      function addMarker(props){
+        var marker = new google.maps.Marker({
+          position:props.coords,
+          map:map,
+          icon:iconImage
+        });
+        props.mprop=marker;
+        
+        attachSecretMessage(marker, '<h5>Dustbin Id:'+props.dustbinId+
+      '</h5><h5>Area:'+props.area+'</h5>');
+      }
+      
+      $(document).ready(function(){
+          $("button").click(function(){
+            $.get( 'https://script.google.com/macros/s/AKfycbzxakzHrpSce9O9gdVm9URS_QKbkXCasLohfDtyg955fV-3-2RU/exec', function( html ) {
+                data=html.user;
+                level=data[data.length-1].level;
+                console.log(level);
+                modTable(level);
+            });
+          });
+        });
+
+      function modTable(level) {
+      table = document.getElementById('table1');
+      row=document.createElement("tr");
+         cell3 = document.createElement("td");
+         textnode3=document.createTextNode(level);
+         cell3.appendChild(textnode3);
+         row.appendChild(cell3);
+         table.appendChild(row);
+         call(level, )
+      }
+
+      function attachSecretMessage(marker, secretMessage, props) {
+        var infowindow = new google.maps.InfoWindow({
+          content: secretMessage
+        });
+
+        marker.addListener('click', function() {
+            if(extiv)
+            extiv.close();
+            infowindow.open(marker.get('map'), marker);
+            extiv=infowindow;
+            var textob = document.getElementsByClassName('searchText');
+            
+            console.log(textob);
+            textob.name=props.dustbinId;
+        });
+      }
+  }
+
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByNGjePD3SkRYANj5XSRVBwxuT-wMJu50&callback=initMap" async defer>
+    </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+  
+
+</body>
+</html>
